@@ -24,4 +24,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::controller(AdminController::class)->group(function(){
     Route::post('/registerAdmin', 'registerAdmin');
     Route::post('/authenticatedAdmin', 'authenticatedAdmin');
+    Route::post('/admin-destroy', 'destroy');
 });
