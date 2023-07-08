@@ -25,4 +25,5 @@ Route::controller(AdminController::class)->group(function(){
     Route::post('/registerAdmin', 'registerAdmin');
     Route::post('/authenticatedAdmin', 'authenticatedAdmin');
     Route::post('/admin-destroy', 'destroy');
+    Route::post('/admins', 'index');
 });

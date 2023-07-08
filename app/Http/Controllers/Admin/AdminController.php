@@ -13,12 +13,10 @@ use Illuminate\Support\Facades\Hash;
 
 
 class AdminController extends Controller
-{
-    public function registerAdmin(Request $request){
+{   
+    public function index(Request $request){
         $validator = Validator::make($request->all(), [
-            'name' => 'required',
-            'email' => 'required|unique:users',
-            'password' => 'required',
+            'token' => 'required',
         ]);
 
         if($validator->fails()){
@@ -33,29 +31,59 @@ class AdminController extends Controller
         
         if($tokenDB > 0){
             $key = env('APP_KEY');
-            $decoded = JWT::decode($token, $key, array('HS256'));
+            $decoded = JWT::decode($token, new Key($key, 'HS256'));
             $decodeArray = (array) $decoded;
             if($decodeArray['extime'] > time()){
-                if(User::create([
-                    'name' => $request->name,
-                    'email' => $request->email,
-                    'password' => Hash::make($request->password),
-                ])){
-                    return response()->json([
-                        'status' => 'success',
-                        'message' => 'successfully save data.'
-                    ]);
+                $admin = User::get();
+                $data = array();
+                foreach($admin as $adm){
+                    $data = array(
+                        'id' => $adm->id,
+                        'name' => $adm->name,
+                        'email' => $adm->email,
+                    );
                 }
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'this data success to get here.',
+                    'data' => $data,
+                ]);
             }else{
                 return response()->json([
                     'status' => 'fail',
-                    'message' => 'sorry, this data fail to save.'
+                    'message' => 'sorry, this data fail to delete.'
                 ]);
             }
         }else{
             return response()->json([
                 'status' => 'fail',
                 'message' => 'sorry, this data token not valid.'
+            ]);
+        }
+    }
+
+    public function registerAdmin(Request $request){
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+            'email' => 'required|unique:users',
+            'password' => 'required',
+            'token' => 'required'
+        ]);
+
+        if($validator->fails()){
+            return response()->json([
+                'status' => 'fail',
+                'message' => $validator->messages()
+            ]);
+        }
+        if(User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+        ])){
+            return response()->json([
+                'status' => 'success',
+                'message' => 'successfully save data.'
             ]);
         }
     }
