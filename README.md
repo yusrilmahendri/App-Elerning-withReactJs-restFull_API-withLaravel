@@ -1,66 +1,198 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# API Spec
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Authentication
 
-## About Laravel
+All API must use this authentication
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Request :
+- Header :
+    - token : "your secret api key with JWT"
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Register
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Request :
+- Method : POST
+- Endpoint : `/api/registerAdmin`
+- Header :
+    - Content-Type: application/json
+    - Accept: application/json
+- Body :
 
-## Learning Laravel
+```json 
+{
+    "name" : "string",
+    "email" : "string, unique",
+    "password" : "string",
+    "token" : "text"
+}
+```
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+Response :
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+```json
+if success then
+{
+    "status": "success",
+    "message": "successfully save data."
+}
+if gagal then 
+"status": "fail",
+    "message": {
+        "email": [
+            "The email has already been taken."
+        ]
+    }
+}
+```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## LOGIN
 
-## Laravel Sponsors
+Request :
+- Method : post
+- Endpoint : `/api/authenticatedAdmin`
+- Header :
+    - Accept: application/json
+    - body
+       {
+            'email': yusrilmahendri@gmail.com
+            'password': 12345678
+       }
+Response :
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+```json 
+{
+    "status": "success",
+    "message": "success authenticated.",
+    "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHRpbWUiOjE2ODg5OTE4MDAsImlkIjoxfQ.drj4yZmXNJS-mAv5BiNWwlnQDHqDF-9eV4lU8xOlOfA"
+}
+```
 
-### Premium Partners
+## Delete Admin
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+Request :
+- Method : POST
+- Endpoint : `api/admin-destroy`
+- Header :
+    - Content-Type: application/json
+    - Accept: application/json
+- Body :
 
-## Contributing
+```json 
+{
+    "id" : "integer",
+    "token" : "string",
+}
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Response :
 
-## Code of Conduct
+```json 
+{
+    "status": "success",
+    "message": "data successfully to delete."
+}
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## List Admin
 
-## Security Vulnerabilities
+Request :
+- Method : post
+- Endpoint : `/api/admins`
+- Header :
+    - Accept: application/json
+Response :
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+```json 
+{
+    "code" : "number",
+    "status" : "string",
+    "data" : [
+        {
+             "id" : "string, unique",
+             "name" : "string",
+             "email" : "string, enique",
+             "password" : "string",
+             "createdAt" : "date",
+             "updatedAt" : "date"
+        },
+    ]
+}
 
-## License
+## List Content
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Request :
+- Method : POST
+- Endpoint : `/api/contents`
+- Header :
+    - Accept: application/json
+- Query Param :
+    - size : numbe,
+    - page : number
+
+Response :
+
+```json 
+ "data": [
+        {
+            "title": "naruto vs madara",
+            "description": "narutoa vs madara episode lanjutan",
+            "link_thumbnail": "https://havecamerawilltravel.com/youtube-thumbnail-size/",
+            "link_video": "https://youtu.be/DmD7QAxY9zg",
+            "status": 1,
+            "view": 0,
+            "store_at": "37 minutes ago"
+        }
+    ],
+    "meta": {
+        "total_content": 1,
+        "current_page": 1,
+        "from": 1,
+        "last_page": 1,
+        "links": [
+            {
+                "url": null,
+                "label": "&laquo; Previous",
+                "active": false
+            },
+            {
+                "url": "http://127.0.0.1:8000/api/contents?page=1",
+                "label": "1",
+                "active": true
+            },
+            {
+                "url": null,
+                "label": "Next &raquo;",
+                "active": false
+            }
+        ],
+        "path": "http://127.0.0.1:8000/api/contents",
+        "per_page": 6,
+        "to": 1,
+        "total": 1
+    },
+    "links": {
+        "first": "http://127.0.0.1:8000/api/contents?page=1",
+        "last": "http://127.0.0.1:8000/api/contents?page=1",
+        "prev": null,
+        "next": null
+    }
+}
+```
+
+## Delete content
+
+Request :
+- Method : POST
+- Endpoint : `/content-destroy`
+- Header :
+    - Accept: application/json
+    - body: token
+
+Response :
+
+```json 
+{
+    "code" : "number",
+    "status" : "string"
+}
+```
