@@ -40,7 +40,6 @@ Response :
             "The email has already been taken."
         ]
     }
-}
 ```
 
 ## LOGIN
@@ -175,7 +174,6 @@ Response :
         "prev": null,
         "next": null
     }
-}
 ```
 
 ## Delete content
