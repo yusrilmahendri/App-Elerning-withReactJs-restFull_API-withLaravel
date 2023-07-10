@@ -15,10 +15,10 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->text('description');
-            $table->text('link_Thumbnail');
+            $table->text('link_thumbnail');
             $table->text('link_video');
             $table->integer('status')->default(1);
-            $table->integer('view');
+            $table->integer('view')->default(0);
             $table->timestamps();
         });
     }

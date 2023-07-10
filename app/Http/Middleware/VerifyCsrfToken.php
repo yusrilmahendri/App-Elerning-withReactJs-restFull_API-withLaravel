@@ -15,6 +15,10 @@ class VerifyCsrfToken extends Middleware
         '/api/registerAdmin',
         '/api/authenticatedAdmin',
         '/api//admin-destroy',
-        '/api/admins'
+        '/api/admins',
+        '/api//content',
+        '/api/updated-content',
+        '/api/content-destroy',
+        '/api/contents'
     ];
 }
