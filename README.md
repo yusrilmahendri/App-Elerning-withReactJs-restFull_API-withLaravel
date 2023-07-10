@@ -30,12 +30,10 @@ Request :
 Response :
 
 ```json
-if success then
 {
     "status": "success",
     "message": "successfully save data."
 }
-if gagal then 
 "status": "fail",
     "message": {
         "email": [
